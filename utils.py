@@ -9,6 +9,8 @@ import pandas as pd
 from tqdm import tqdm
 from transformers import ViTForImageClassification
 import models
+import pickle
+from eval import EvalResults
 
 # Constants
 NUM_CLASSES = 4
@@ -59,6 +61,14 @@ def load_model(model_path):
 
     return model
 
+def load_results(results_path):
+    if not os.path.exists(results_path):
+        raise FileNotFoundError(f"Results file {results_path} not found")
+    
+    with open(results_path, 'rb') as f:
+        results = pickle.load(f)
+    
+    return results
 
 def create_dataset_df(base_path):
     data = []
