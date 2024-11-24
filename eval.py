@@ -79,8 +79,8 @@ def main():
         print(f"{model_name} loaded successfully")
 
         print("Beginning evaluation")
-        results = eval(model, val_loader, num_batches=16) # 16 batches of 32 images = 512 images being evaluated on
-        save_path = rf"results\{model_name[:-4]}_eval_results.pkl"
+        results = eval(model, val_loader, num_batches=32) # 32 batches of 32 images = 1024 images being evaluated on
+        save_path = rf"results\{model_name[:-4]}.pkl"
         try:
             results.save(save_path)
             print(f"Results saved to {save_path}")

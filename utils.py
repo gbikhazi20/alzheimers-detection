@@ -1,16 +1,13 @@
 import torch
-from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
-from torchvision import transforms, models
+from torch.utils.data import Dataset, DataLoader
+from torchvision import models
 import os
 from PIL import Image
-import numpy as np
 from sklearn.model_selection import train_test_split
 import pandas as pd
-from tqdm import tqdm
 from transformers import ViTForImageClassification
 import models
 import pickle
-from eval import EvalResults
 
 # Constants
 NUM_CLASSES = 4
@@ -62,6 +59,8 @@ def load_model(model_path):
     return model
 
 def load_results(results_path):
+    from eval import EvalResults
+
     if not os.path.exists(results_path):
         raise FileNotFoundError(f"Results file {results_path} not found")
     
