@@ -2,7 +2,7 @@
 
 This library contains the code for our Alzheimer's detection final project.
 
-The bulk of the code in this repo dedicated to model training lived in a Colab Notebook for most of this project's life. Much of it was written by [George Chakhnashvili](www.github.com/ShellRox), and some by [George Bikhazi](www.github.com/gbikhazi20), who refactored everything into this repo and added evaluation and visualization functionality.
+The bulk of the code in this repo dedicated to model training lived in a Colab Notebook for most of this project's life. Much of it was written by [George Chakhnashvili](https://www.github.com/ShellRox), and some by [George Bikhazi](https://www.github.com/gbikhazi20), who refactored everything into this repo and added evaluation and visualization functionality.
 
 We provide tools for:
 
