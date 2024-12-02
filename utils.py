@@ -1,5 +1,5 @@
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
 from torchvision import models
 import os
 from PIL import Image
@@ -98,8 +98,56 @@ def create_dataset_df(base_path):
 
     return df
 
+def create_data_loaders(df, train_transform, val_transform, batch_size=32, val_size=0.2):
+    train_df, val_df = train_test_split(
+        df,
+        test_size=val_size,
+        stratify=df['label'],
+        random_state=42
+    )
+
+    train_dataset = AlzheimersDataset(
+        image_paths=train_df['path'].values,
+        labels=train_df['label'].values,
+        transform=train_transform
+    )
+
+    val_dataset = AlzheimersDataset(
+        image_paths=val_df['path'].values,
+        labels=val_df['label'].values,
+        transform=val_transform
+    )
+
+    class_counts = train_df['label'].value_counts().sort_index()
+    weights = 1.0 / torch.tensor(class_counts.values, dtype=torch.float)
+    sample_weights = weights[train_df['label'].values]
+
+    sampler = WeightedRandomSampler(
+        weights=sample_weights,
+        num_samples=len(sample_weights),
+        replacement=True
+    )
+
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        sampler=sampler,
+        num_workers=4,
+        pin_memory=True
+    )
+
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=4,
+        pin_memory=True
+    )
+
+    return train_loader, val_loader
+
 def create_val_loader(df, val_transform, batch_size=32, val_size=0.2):
-    train_loader, val_df = train_test_split(
+    _, val_df = train_test_split(
         df,
         test_size=val_size,
         stratify=df['label'],
