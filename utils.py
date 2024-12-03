@@ -160,12 +160,23 @@ def create_val_loader(df, val_transform, batch_size=32, val_size=0.2):
         transform=val_transform
     )
 
+    class_counts = val_df['label'].value_counts().sort_index()
+    weights = 1.0 / torch.tensor(class_counts.values, dtype=torch.float)
+    sample_weights = weights[val_df['label'].values]
+
+    sampler = WeightedRandomSampler(
+        weights=sample_weights,
+        num_samples=len(sample_weights),
+        replacement=True
+    )
+
     val_loader = DataLoader(
         val_dataset,
         batch_size=batch_size,
         shuffle=False,
         num_workers=4,
-        pin_memory=True
+        pin_memory=True,
+        sampler=sampler
     )
 
     return val_loader

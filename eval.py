@@ -53,9 +53,9 @@ def main():
     data_dir = "Data"
 
     # Create dataset DataFrame
-    df = create_dataset_df(data_dir)
+    test_df = create_dataset_df(data_dir)
 
-    print(df.info())
+    print(test_df.info())
 
     BATCH_SIZE = 32
 
@@ -65,9 +65,10 @@ def main():
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
+
     # Create data loader
     val_loader = create_val_loader(
-        df,
+        test_df,
         val_transform=val_transform,
         batch_size=BATCH_SIZE,
         val_size=0.2
@@ -92,7 +93,6 @@ def main():
 
 
 if __name__ == "__main__":
-    
     main()
 
 
