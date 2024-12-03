@@ -3,6 +3,7 @@ import torch
 from tqdm import tqdm
 import pickle
 from utils import *
+from torchvision import transforms
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
